@@ -77,7 +77,7 @@ spec:
     mappingMethod: claim
     type: OpenID
     openID:
-      clientID: $app_id
+      clientID: $client_id
       clientSecret:
         name: openid-client-secret-azuread
       extraScopes:
