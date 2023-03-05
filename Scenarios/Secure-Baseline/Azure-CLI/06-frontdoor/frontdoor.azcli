@@ -3,7 +3,7 @@ aro_rgName='aro-'$(az aro show -n $AROCLUSTER -g $SPOKERGNAME --query "clusterPr
 internal_LbName=$(az network lb list --resource-group $aro_rgName --query "[? contains(name, 'internal')].name" -o tsv)
 worker_subnetId=$(az network vnet subnet show -n $WORKERAROSUBNET_NAME -g $SPOKERGNAME --vnet-name $SPOKEVNET_NAME --query "id" -o tsv)
 lbconfig_id=$(az network lb frontend-ip list -g $aro_rgName --lb-name $internal_LbName --query "[? contains(subnet.id, 'worker')].id" -o tsv)
-lbconfig_ip=$(az network lb frontend-ip list -g $aro_rgName --lb-name $internal_LbName --query "[? contains(subnet.id, 'worker')].privateIpAddress" -o tsv)
+lbconfig_ip=$(az network lb frontend-ip list -g $aro_rgName --lb-name $internal_LbName --query "[? contains(subnet.id, 'worker')].privateIPAddress" -o tsv)
 
 # Make sure worker subnet has private link service network policies disabled
 az network private-link-service create \
@@ -20,6 +20,7 @@ privatelink_id=$(az network private-link-service show -n $AFD_PLS_NAME -g $SPOKE
 az afd profile create \
   --resource-group $SPOKERGNAME \
   --profile-name $AFD_NAME \
+  --origin-response-timeout-seconds 60 \  
   --sku Premium_AzureFrontDoor
 
 afd_id=$(az afd profile show -g $SPOKERGNAME --profile-name $AFD_NAME --query 'id' -o tsv)
@@ -33,7 +34,6 @@ az monitor diagnostic-settings create \
 
 az afd endpoint create \
   --resource-group $SPOKERGNAME \
-  --origin-response-timeout-seconds 60 \
   --enabled-state Enabled \
   --endpoint-name 'aro-ilb'$uniqueId \
   --profile-name $AFD_NAME
