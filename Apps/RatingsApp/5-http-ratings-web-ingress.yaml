@@ -5,7 +5,7 @@ metadata:
   name: ratingsapp-ingress
 spec:
   rules:
-    - host: <fqdn>
+    - host: aro-ilb3587-djhqdtepbfcfgpdy.z01.azurefd.net
       http:
         paths:
           - path: /
