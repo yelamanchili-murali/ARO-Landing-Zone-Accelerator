@@ -14,7 +14,7 @@ spec:
       serviceAccountName: svcrattingsapp
       containers:
       - name: ratings-web
-        image: <acr name>.azurecr.io/ratings-web:v1 # IMPORTANT: update with your own repository
+        image: mryreg.azurecr.io/ratings-web:v1 # IMPORTANT: update with your own repository
         imagePullPolicy: Always
         ports:
         - containerPort: 8080 # the application listens to this port
