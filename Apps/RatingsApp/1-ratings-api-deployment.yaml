@@ -15,22 +15,15 @@ spec:
       serviceAccountName: svcrattingsapp
       containers:
         - name: ratings-api
-          image: <acr name>.azurecr.io/ratings-api:v1 # IMPORTANT: update with your own repository
+          image: mryreg.azurecr.io/ratings-api:v1 # IMPORTANT: update with your own repository
           imagePullSecrets:
-            - name: acr-secret
+            - name: mryreg-secret
           imagePullPolicy: Always
-          volumeMounts:
-            - name: secrets-store-inline
-              mountPath: "/mnt/secrets-store"
-              readOnly: true
           ports:
             - containerPort: 3000 # the application listens to this port
           env:
             - name: MONGODB_URI # the application expects to find the MongoDB connection details in this environment variable
-              valueFrom:
-                secretKeyRef:
-                  name: mongodburi
-                  key: MONGODBURI # the name of Secret in KeyVault
+              value: 'mongodb://cosmosuser:xxxxxxxxxxxxxxxxxxxx@cosmosyyyy.mongo.cosmos.azure.com:10255/ratingsdb?ssl=true&replicaSet=globaldb&retrywrites=false&appName=@cosmosyyyy@'
           resources:
             requests: # minimum resources required
               cpu: 250m
@@ -49,12 +42,3 @@ spec:
             httpGet:
               port: 3000
               path: /healthz
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "mongo-secret-csi"
-            nodePublishSecretRef: # Only required when using service principal mode
-              name: secrets-store-creds
