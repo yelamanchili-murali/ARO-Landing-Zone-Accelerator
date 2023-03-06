@@ -127,7 +127,8 @@ az afd route create \
   --route-name 'aro-route' \
   --supported-protocols Http Https \
   --patterns-to-match '/*' \
-  --custom-domains $AFD_APP_CUSTOM_DOMAIN_NAME
+  --link-to-default-domain Enabled 
+#  --custom-domains $AFD_APP_CUSTOM_DOMAIN_NAME  # if using a custome domain name
 
 # Create a CName record type in your DNS pointing ratingsapp to Azure Front Door endpoint
 # For example create ratingsapp.umar.cloud CNAME record pointing to aro-ilb6779.z01.azurefd.net
