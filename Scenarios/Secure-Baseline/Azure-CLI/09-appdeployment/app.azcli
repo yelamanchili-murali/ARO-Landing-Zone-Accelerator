@@ -153,6 +153,10 @@ git clone https://github.com/MicrosoftDocs/mslearn-aks-workshop-ratings-web.git
 sudo az acr login -n $ACR_NAME
 
 cd mslearn-aks-workshop-ratings-api
+
+# Update base image version to node:14.17.5-alpine. using 13.5-alpine results in Mongodb connection errors
+# Replace `FROM node:13.5-alpine` with `FROM node:14.17.5-alpine`
+
 # If running from Git Bash terminal skip the sudo word
 sudo docker build . -t "$ACR_NAME.azurecr.io/ratings-api:v1"
 sudo docker push "$ACR_NAME.azurecr.io/ratings-api:v1"
